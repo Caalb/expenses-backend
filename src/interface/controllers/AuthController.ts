@@ -1,13 +1,13 @@
 import { validate } from "class-validator";
 import { Request, Response } from "express";
-import { DIContainer } from "../../infrastructure/DIContainer";
+import { DIUsersContainer } from "../../infrastructure/DIUsersContainer";
 import { SignUpUserDto } from "../dto/SignUpUserDto";
 import { SignInUserDto } from "../dto/SignInUserDto";
 import { AppError } from "../../shared/errors/AppError";
 
 export class AuthController {
-  private signUpUser = DIContainer.getSignUpUserUseCase();
-  private signInUser = DIContainer.getSignInUserUseCase();
+  private signUpUser = DIUsersContainer.getSignUpUserUseCase();
+  private signInUser = DIUsersContainer.getSignInUserUseCase();
 
   async signUp(req: Request, res: Response): Promise<any> {
     const dto = Object.assign(new SignUpUserDto(), req.body);
@@ -17,8 +17,17 @@ export class AuthController {
       return res.status(422).json({ errors });
     }
 
-    const user = await this.signUpUser.execute(dto, res);
-    return res.status(201).json(user);
+    try {
+      const user = await this.signUpUser.execute(dto);
+
+      return res.status(201).json(user);
+    } catch (error) {
+      if (error instanceof AppError) {
+        return res.status(error.statusCode).json({ message: error.message });
+      }
+
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
   }
 
   async signin(req: Request, res: Response): Promise<any> {
@@ -31,11 +40,13 @@ export class AuthController {
 
     try {
       const token = await this.signInUser.execute(dto);
+
       return res.status(200).json({ token });
     } catch (error) {
       if (error instanceof AppError) {
         return res.status(error.statusCode).json({ message: error.message });
       }
+
       return res.status(500).json({ message: "Internal Server Error" });
     }
   }
