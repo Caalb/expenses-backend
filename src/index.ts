@@ -8,6 +8,7 @@ import { errorHandler } from "./interface/middleware/errorHandler";
 import { logger } from "./infrastructure/logger";
 import { setupSwagger } from "./interface/swagger";
 import { AppDataSource } from "./infrastructure/database/data-source";
+import { usersRoutes } from "./interface/routes/usersRoutes";
 
 const app = express();
 
@@ -21,6 +22,7 @@ AppDataSource.initialize()
 
 app.use(express.json());
 app.use("/", expensesRoutes);
+app.use("/users", usersRoutes);
 app.get("/ping", (req, res) => {
   res.send("pong");
 });
