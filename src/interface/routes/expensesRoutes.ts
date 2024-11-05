@@ -37,7 +37,7 @@ router.get("/expenses", (req, res) => expensesController.getAll(req, res));
  *                 type: string
  *                 format: date-time
  *                 example: "2023-10-01T00:00:00Z"
- *               value:
+ *               amount:
  *                 type: number
  *                 example: 150.75
  *     responses:
@@ -58,7 +58,7 @@ router.get("/expenses", (req, res) => expensesController.getAll(req, res));
  *                   type: string
  *                   format: date-time
  *                   example: "2023-10-01T00:00:00Z"
- *                 value:
+ *                 amount:
  *                   type: number
  *                   example: 150.75
  *       400:
