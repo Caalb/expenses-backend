@@ -1,7 +1,6 @@
 import { DataSource } from "typeorm";
 import { ExpensesEntity } from "./entities/ExpensesEntity";
 
-console.log(process.env);
 export const AppDataSource = new DataSource({
   type: "postgres",
   host: process.env.DB_HOST,
