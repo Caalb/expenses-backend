@@ -6,5 +6,6 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(err.stack);
   res.status(500).json({ message: "Aconteceu um erro inesperado" });
 };
