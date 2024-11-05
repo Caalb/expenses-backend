@@ -3,7 +3,6 @@ import swaggerUi from "swagger-ui-express";
 import { Express } from "express";
 import path from "path";
 
-console.log(path.join(__dirname, "routes/*.ts"));
 const options = {
   definition: {
     openapi: "3.0.0",
