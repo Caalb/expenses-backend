@@ -66,4 +66,24 @@ router.get("/expenses", (req, res) => expensesController.getAll(req, res));
  */
 router.post("/expenses", (req, res) => expensesController.create(req, res));
 
+/**
+ * @swagger
+ * /expenses/{id}:
+ *   delete:
+ *     summary: Deleta uma despesa
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Despesa deletada com sucesso
+ */
+
+router.delete("/expenses/:id", (req, res) =>
+  expensesController.delete(req, res)
+);
+
 export { router as expensesRoutes };
