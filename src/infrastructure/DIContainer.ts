@@ -1,8 +1,7 @@
-import { CreateExpenses } from "../use-cases/createExpense";
-import { GetAllExpenses } from "../use-cases/getAllExpenses";
+import { CreateExpenses } from "../use-cases/expenses/createExpense";
+import { GetAllExpenses } from "../use-cases/expenses/getAllExpenses";
+import { DeleteExpense } from "../use-cases/expenses/deleteExpense";
 import { ExpensesRepository } from "./repositories/ExpensesRepository";
-import { CreateExpensesDto } from "../interface/dto/CreateExpensesDto";
-import { validate } from "class-validator";
 
 class DIContainer {
   private static _expensesRepository = new ExpensesRepository();
@@ -17,6 +16,10 @@ class DIContainer {
 
   static getCreateExpensesUseCase(): CreateExpenses {
     return new CreateExpenses(DIContainer.getExpensesRepository());
+  }
+
+  static getDeleteExpensesUseCase(): DeleteExpense {
+    return new DeleteExpense(DIContainer.getExpensesRepository());
   }
 }
 
