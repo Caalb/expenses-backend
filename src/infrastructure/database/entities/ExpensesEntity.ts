@@ -2,18 +2,15 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity("expenses")
 export class ExpensesEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   id!: string;
 
   @Column()
   description!: string;
 
-  @Column({ type: "date" })
-  date!: Date;
+  @Column("decimal")
+  amount!: number;
 
   @Column()
-  userId!: string;
-
-  @Column({ type: "decimal", precision: 10, scale: 2 })
-  value!: number;
+  date!: Date;
 }
