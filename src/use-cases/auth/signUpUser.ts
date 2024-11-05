@@ -4,17 +4,20 @@ import { User } from "../../domain/entities/Users";
 import { UsersRepository } from "../../domain/interfaces/UsersRepository";
 import { SignUpUserDto } from "../../interface/dto/SignUpUserDto";
 import bcrypt from "bcrypt";
+import { AppError } from "../../shared/errors/AppError";
+import { HttpStatus } from "../../shared/httpStatus";
 
 export class SignUpUser {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async execute(dto: SignUpUserDto, res: Response): Promise<User | void> {
+  async execute(dto: SignUpUserDto): Promise<User | void> {
     const existingUser = await this.usersRepository.findByEmail(dto.email);
 
     if (existingUser) {
-      res.status(422).json({ message: "Email já está em uso" });
-
-      return;
+      throw new AppError(
+        "Email já está em uso",
+        HttpStatus.UNPROCESSABLE_ENTITY
+      );
     }
 
     const hashPassword = await bcrypt.hash(dto.password, 12);
