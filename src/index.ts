@@ -9,6 +9,7 @@ import { logger } from "./infrastructure/logger";
 import { setupSwagger } from "./interface/swagger";
 import { AppDataSource } from "./infrastructure/database/data-source";
 import { authRoutes } from "./interface/routes/authRoutes";
+import { AuthMiddleware } from "./interface/middleware/auth";
 
 const app = express();
 
@@ -21,11 +22,12 @@ AppDataSource.initialize()
   });
 
 app.use(express.json());
-app.use("/", expensesRoutes);
 app.use("/auth", authRoutes);
 app.get("/ping", (req, res) => {
   res.send("pong");
 });
+
+app.use("/", AuthMiddleware, expensesRoutes);
 
 setupSwagger(app);
 app.use(errorHandler);
