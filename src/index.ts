@@ -1,5 +1,8 @@
 import "reflect-metadata";
 import express from "express";
+import dotenv from "dotenv";
+dotenv.config();
+
 import { expensesRoutes } from "./interface/routes/expensesRoutes";
 import { errorHandler } from "./interface/middleware/errorHandler";
 import { logger } from "./infrastructure/logger";
@@ -24,6 +27,8 @@ app.get("/ping", (req, res) => {
 
 setupSwagger(app);
 app.use(errorHandler);
-app.listen(3000, () => {
-  logger.info(`Server is running on port ${3000}`);
+
+const port = process.env.APP_PORT || 3000;
+app.listen(port, () => {
+  logger.info(`Server is running on port ${port}`);
 });
