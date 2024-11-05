@@ -5,6 +5,7 @@ import { UpdateExpenses } from "../use-cases/expenses/updateExpense";
 import { ExpensesRepository } from "./repositories/ExpensesRepository";
 import { UsersRepository } from "./repositories/UsersRepository";
 import { SignUpUser } from "../use-cases/auth/signUpUser";
+import { SignInUser } from "../use-cases/auth/signInUser";
 
 class DIContainer {
   private static _expensesRepository = new ExpensesRepository();
@@ -36,6 +37,10 @@ class DIContainer {
 
   static getSignUpUserUseCase(): SignUpUser {
     return new SignUpUser(DIContainer.getUsersRepository());
+  }
+
+  static getSignInUserUseCase(): SignInUser {
+    return new SignInUser(DIContainer.getUsersRepository());
   }
 }
 
