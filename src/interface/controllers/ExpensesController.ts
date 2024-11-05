@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
-import { DIContainer } from "../../infrastructure/DIContainer";
+import { DIExpensesContainer } from "../../infrastructure/DIExpensesContainer";
 import { CreateExpensesDto } from "../dto/CreateExpensesDto";
 import { validate } from "class-validator";
+import { AppError } from "../../shared/errors/AppError";
 
 export class ExpensesController {
-  private getAllExpenses = DIContainer.getGetAllExpensesUseCase();
-  private createExpenses = DIContainer.getCreateExpensesUseCase();
-  private deleteExpenses = DIContainer.getDeleteExpensesUseCase();
-  private updateExpenses = DIContainer.getUpdateExpensesUseCase();
+  private getAllExpenses = DIExpensesContainer.getGetAllExpensesUseCase();
+  private createExpenses = DIExpensesContainer.getCreateExpensesUseCase();
+  private deleteExpenses = DIExpensesContainer.getDeleteExpensesUseCase();
+  private updateExpenses = DIExpensesContainer.getUpdateExpensesUseCase();
 
   async getAll(req: Request, res: Response): Promise<void> {
     const expenses = await this.getAllExpenses.execute();
@@ -34,14 +35,31 @@ export class ExpensesController {
     if (errors.length > 0) {
       return res.status(422).json({ errors });
     }
+    try {
+      const expense = await this.updateExpenses.execute(expenseId, dto);
+      return res.status(200).json(expense);
+    } catch (error) {
+      if (error instanceof AppError) {
+        return res.status(error.statusCode).json({ message: error.message });
+      }
 
-    const expense = await this.updateExpenses.execute(expenseId, dto);
-    return res.status(200).json(expense);
+      return res.status(500).json({ message: "Ocorreu um erro interno" });
+    }
   }
 
-  async delete(req: Request, res: Response): Promise<void> {
+  async delete(req: Request, res: Response): Promise<any> {
     const expenseId = req.params.id;
-    await this.deleteExpenses.execute(expenseId);
-    res.status(204).send();
+
+    try {
+      await this.deleteExpenses.execute(expenseId);
+
+      res.status(204).send();
+    } catch (error) {
+      if (error instanceof AppError) {
+        return res.status(error.statusCode).json({ message: error.message });
+      }
+
+      return res.status(500).json({ message: "Ocorreu um erro interno" });
+    }
   }
 }
