@@ -1,13 +1,13 @@
 import { Router } from "express";
-import { ExtensesController } from "../controllers/ExtensesController";
+import { ExpensesController } from "../controllers/ExpensesController";
 
 const router = Router();
 
-const extensesController = new ExtensesController();
+const expensesController = new ExpensesController();
 
 /**
  * @swagger
- * /extenses:
+ * /expenses:
  *   get:
  *     summary: Retorna todas as despesas
  *     responses:
@@ -15,11 +15,11 @@ const extensesController = new ExtensesController();
  *         description: Lista de despesas
  */
 
-router.get("/extenses", (req, res) => extensesController.getAll(req, res));
+router.get("/expenses", (req, res) => expensesController.getAll(req, res));
 
 /**
  * @swagger
- * /extenses:
+ * /expenses:
  *   post:
  *     summary: Cria uma nova despesa
  *     requestBody:
@@ -64,6 +64,6 @@ router.get("/extenses", (req, res) => extensesController.getAll(req, res));
  *       400:
  *         description: Requisição inválida
  */
-router.post("/extenses", (req, res) => extensesController.create(req, res));
+router.post("/expenses", (req, res) => expensesController.create(req, res));
 
-export { router as extensesRoutes };
+export { router as expensesRoutes };

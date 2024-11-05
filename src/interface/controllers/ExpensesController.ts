@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { DIContainer } from "../../infrastructure/DIContainer";
-import { CreateBookDto } from "../dto/CreateExtensesDto";
+import { CreateBookDto } from "../dto/CreateExpensesDto";
 import { validate } from "class-validator";
 
-export class ExtensesController {
+export class ExpensesController {
   private getAllExpenses = DIContainer.getGetAllExpensesUseCase();
 
   async getAll(req: Request, res: Response): Promise<void> {
