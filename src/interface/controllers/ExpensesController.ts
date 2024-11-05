@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { DIContainer } from "../../infrastructure/DIContainer";
 import { CreateExpensesDto } from "../dto/CreateExpensesDto";
 import { validate } from "class-validator";
-import { DeleteExpense } from "../../use-cases/expenses/deleteExpense";
 
 export class ExpensesController {
   private getAllExpenses = DIContainer.getGetAllExpensesUseCase();
@@ -20,7 +19,7 @@ export class ExpensesController {
     const errors = await validate(dto);
 
     if (errors.length > 0) {
-      return res.status(400).json({ errors });
+      return res.status(422).json({ errors });
     }
 
     const expense = await this.createExpenses.execute(dto);
@@ -33,7 +32,7 @@ export class ExpensesController {
     const errors = await validate(dto);
 
     if (errors.length > 0) {
-      return res.status(400).json({ errors });
+      return res.status(422).json({ errors });
     }
 
     const expense = await this.updateExpenses.execute(expenseId, dto);
