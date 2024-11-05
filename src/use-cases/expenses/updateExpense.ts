@@ -1,6 +1,8 @@
 import { Expenses } from "../../domain/entities/Expenses";
 import { ExpensesRepository } from "../../domain/interfaces/ExpensesRepository";
 import { CreateExpensesDto } from "../../interface/dto/CreateExpensesDto";
+import { AppError } from "../../shared/errors/AppError";
+import { HttpStatus } from "../../shared/httpStatus";
 
 export class UpdateExpenses {
   constructor(private readonly expensesRepository: ExpensesRepository) {}
@@ -9,7 +11,7 @@ export class UpdateExpenses {
     const expense = await this.expensesRepository.getById(id);
 
     if (!expense) {
-      throw new Error("Expense not found");
+      throw new AppError("Despesa não encontrada", HttpStatus.NOT_FOUND);
     }
 
     expense.description = dto.description;
