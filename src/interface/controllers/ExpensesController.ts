@@ -3,19 +3,30 @@ import { DIExpensesContainer } from "../../infrastructure/DIExpensesContainer";
 import { CreateExpensesDto } from "../dto/CreateExpensesDto";
 import { validate } from "class-validator";
 import { AppError } from "../../shared/errors/AppError";
+import { JwtPayload } from "jsonwebtoken";
 
+interface IAuthenticatedRequest extends Request {
+  user?: { id: string };
+}
 export class ExpensesController {
   private getAllExpenses = DIExpensesContainer.getGetAllExpensesUseCase();
   private createExpenses = DIExpensesContainer.getCreateExpensesUseCase();
   private deleteExpenses = DIExpensesContainer.getDeleteExpensesUseCase();
   private updateExpenses = DIExpensesContainer.getUpdateExpensesUseCase();
 
-  async getAll(req: Request, res: Response): Promise<void> {
-    const expenses = await this.getAllExpenses.execute();
+  async getAll(req: IAuthenticatedRequest, res: Response): Promise<void> {
+    const userId = req.user?.id;
+    if (!userId) {
+      res.status(401).json({ message: "Nenhum usuário autenticado" });
+
+      return;
+    }
+
+    const expenses = await this.getAllExpenses.execute(userId);
     res.status(200).json(expenses);
   }
 
-  async create(req: Request, res: Response): Promise<any> {
+  async create(req: IAuthenticatedRequest, res: Response): Promise<any> {
     const dto = Object.assign(new CreateExpensesDto(), req.body);
     const errors = await validate(dto);
 
@@ -23,7 +34,13 @@ export class ExpensesController {
       return res.status(422).json({ errors });
     }
 
-    const expense = await this.createExpenses.execute(dto);
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Nenhum usuário autenticado" });
+    }
+
+    const expense = await this.createExpenses.execute(dto, userId);
     return res.status(201).json(expense);
   }
 
