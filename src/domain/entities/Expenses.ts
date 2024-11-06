@@ -3,6 +3,7 @@ export class Expenses {
     public readonly id: string,
     public description: string,
     public date: Date,
-    public amount: number
+    public amount: number,
+    public user: { id: string }
   ) {}
 }
