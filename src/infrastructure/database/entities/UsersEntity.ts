@@ -1,10 +1,11 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToMany,
 } from "typeorm";
+import { ExpensesEntity } from "./ExpensesEntity";
 
 @Entity({ name: "users" })
 export class UsersEntity {
@@ -22,4 +23,7 @@ export class UsersEntity {
 
   @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   created_at!: Date;
+
+  @OneToMany(() => ExpensesEntity, (expense) => expense.user)
+  expenses!: ExpensesEntity[];
 }
