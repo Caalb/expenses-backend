@@ -13,8 +13,12 @@ export class ExpensesRepository {
     await this.repository.save(expenses);
   }
 
-  async getAll(): Promise<ExpensesEntity[]> {
-    return await this.repository.find();
+  async getAll(userId: string): Promise<ExpensesEntity[]> {
+    const expenses = await this.repository.find({
+      where: { user: { id: userId } },
+    });
+
+    return expenses;
   }
 
   async getById(id: string): Promise<ExpensesEntity | null> {
