@@ -1,11 +1,12 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
   DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
+import { UsersEntity } from "./UsersEntity";
 
 @Entity("expenses")
 export class ExpensesEntity {
@@ -26,4 +27,7 @@ export class ExpensesEntity {
 
   @DeleteDateColumn({ type: "timestamp", nullable: true })
   deleted_at!: Date;
+
+  @ManyToOne(() => UsersEntity, (user) => user.expenses)
+  user!: UsersEntity;
 }
