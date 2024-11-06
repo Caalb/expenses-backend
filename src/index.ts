@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 dotenv.config();
 
 import { expensesRoutes } from "./interface/routes/expensesRoutes";
@@ -13,6 +14,7 @@ import { AuthMiddleware } from "./interface/middleware/auth";
 
 const app = express();
 
+app.use(cors());
 AppDataSource.initialize()
   .then(() => {
     logger.info("Database connected");
