@@ -1,9 +1,9 @@
+import { validate } from "class-validator";
 import { Request, Response } from "express";
 import { DIExpensesContainer } from "../../infrastructure/DIExpensesContainer";
-import { CreateExpensesDto } from "../dto/CreateExpensesDto";
-import { validate } from "class-validator";
 import { AppError } from "../../shared/errors/AppError";
-import { JwtPayload } from "jsonwebtoken";
+import { IUserJwtPayload } from "../../shared/types/UserJwtPayload";
+import { CreateExpensesDto } from "../dto/CreateExpensesDto";
 
 interface IAuthenticatedRequest extends Request {
   user?: { id: string };
@@ -40,7 +40,11 @@ export class ExpensesController {
       return res.status(401).json({ message: "Nenhum usuário autenticado" });
     }
 
-    const expense = await this.createExpenses.execute(dto, userId);
+    const expense = await this.createExpenses.execute(
+      dto,
+      req.user as IUserJwtPayload
+    );
+
     return res.status(201).json(expense);
   }
 
