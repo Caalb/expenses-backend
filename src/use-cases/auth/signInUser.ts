@@ -37,7 +37,13 @@ export class SignInUser {
       );
     }
 
-    const token = jwt.sign({ id: existingUser.id }, process.env.JWT_SECRET, {
+    const payload = {
+      id: existingUser.id,
+      email: existingUser.email,
+      name: existingUser.name,
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
 
