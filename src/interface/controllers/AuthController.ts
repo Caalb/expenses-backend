@@ -26,7 +26,7 @@ export class AuthController {
         return res.status(error.statusCode).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Internal Server Error" });
+      return res.status(500);
     }
   }
 
@@ -47,7 +47,7 @@ export class AuthController {
         return res.status(error.statusCode).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Internal Server Error" });
+      return res.status(500);
     }
   }
 }

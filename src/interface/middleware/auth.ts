@@ -13,7 +13,7 @@ export const AuthMiddleware = (
   next: NextFunction
 ) => {
   if (!secretKey) {
-    res.status(500).json({ message: "Chave secreta não configurada" });
+    res.status(500);
     return;
   }
 
@@ -32,8 +32,6 @@ export const AuthMiddleware = (
 
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
-      console.log(token);
-      console.log(secretKey);
       return res.status(401).json({ message: "Sessão inválida" });
     }
 

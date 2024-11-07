@@ -60,7 +60,7 @@ export class ExpensesController {
         return res.status(error.statusCode).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Ocorreu um erro interno" });
+      return res.status(500);
     }
   }
 
@@ -76,7 +76,7 @@ export class ExpensesController {
         return res.status(error.statusCode).json({ message: error.message });
       }
 
-      return res.status(500).json({ message: "Ocorreu um erro interno" });
+      return res.status(500);
     }
   }
 }
